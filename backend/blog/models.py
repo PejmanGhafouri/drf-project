@@ -14,6 +14,5 @@ class Article(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 	status = models.BooleanField(default=True)
 	
-
-def __str__(self):
+	def __str__(self):
 		return self.title
