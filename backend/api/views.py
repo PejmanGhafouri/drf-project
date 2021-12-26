@@ -20,11 +20,27 @@ from django.contrib.auth import get_user_model
 # 	lookup_field ='pk'
 # 	permission_classes = (IsStaffOrReadOnly , IsAuthorOrReadOnly) 
 	
- 
- 
+
 class ArticleViewSet(ModelViewSet):
+	
 	queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
+	filterset_fields = ['status', 'author']
+	search_fields = ['title', 'content','author__username','author__first_name','author__last_name']
+
+
+	# def get_queryset(self):
+	# 	queryset = Article.objects.all()
+	# 	status = self.request.query_params.get('status')
+	# 	if status is not None:
+	# 		queryset = queryset.filter(status=status)
+
+	# 	author = self.request.query_params.get('author')
+	# 	if author is not None:
+	# 		queryset = queryset.filter(author__username=author)
+	# 	return queryset
+
+
 
 	def get_permissions(self):
 

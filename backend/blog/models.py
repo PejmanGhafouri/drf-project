@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 # Create your models here.
@@ -7,7 +7,7 @@ from django.utils import timezone
 class Article(models.Model):
 	title = models.CharField(max_length=200)
 	slug = models.SlugField(max_length=100, unique=True)
-	author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+	author = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
 	content = models.TextField()
 	publish = models.DateTimeField(default=timezone.now)
 	created = models.DateTimeField(auto_now_add=True)
