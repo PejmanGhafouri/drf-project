@@ -1,22 +1,32 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from rest_framework import serializers
 from blog.models import Article
 from django.contrib.auth import get_user_model
+from drf_dynamic_fields import DynamicFieldsMixin
 
-class AuthorSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = get_user_model()
-		fields = ['id','username','first_name','last_name']
+# class AuthorSerializer(serializers.ModelSerializer):
+# 	class Meta:
+# 		model = get_user_model()
+# 		fields = ['id','username','first_name','last_name']
 
-class ArticleSerializer(serializers.ModelSerializer):
+class ArticleSerializer(DynamicFieldsMixin,serializers.ModelSerializer):
 	
+	def getAuthorUsername(self , obj):
+		return {
+			'username' : obj.author.username ,
+			'first_name':obj.author.first_name ,
+			'last_name':obj.author.last_name ,
+			}
+
+
 	# author = AuthorSerializer()
-	author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
+	# author = serializers.HyperlinkedIdentityField(view_name='api:author-detail')
+	author = serializers.SerializerMethodField("getAuthorUsername")
 	class Meta:
 		model = Article
-		# fields = ('title','slug','author','content','publish','status')  #selected fields
-		# exclude = ('created','updated') #all fields except ...
 		fields = '__all__'
+		# exclude = ('created','updated') #all fields except ...
+		# fields = ('title','slug','author','content','publish','status')  #selected fields
 		
 	def validate_title(self, value):
 		filter_list = ['javascript','PHP','laravel']
