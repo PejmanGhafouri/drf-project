@@ -1,6 +1,6 @@
 # from .views import ArticleList,ArticleDetail,UserList,UserDetail
 from django.urls import path,include
-from .views import UserViewSet , ArticleViewSet
+from .views import AuthorRetrieve, UserViewSet , ArticleViewSet
 
 # urlpatterns = [
 # 	path('', ArticleList.as_view(), name="list"),
@@ -24,4 +24,5 @@ urlpatterns = router.urls
 
 urlpatterns = [
 	path('',include (router.urls)),
+	path('authors/<int:pk>/',AuthorRetrieve.as_view(),name='author-detail'),
 ]
